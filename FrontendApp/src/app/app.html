@@ -1,0 +1,37 @@
+<header class="app-header">
+  <div class="bar">
+    <a class="brand" routerLink="/books">Library</a>
+
+    <nav>
+      <a routerLink="/books" routerLinkActive="active">Catalogue</a>
+
+      @if (auth.isMember()) {
+        <a routerLink="/my/loans" routerLinkActive="active">My books</a>
+        <a routerLink="/my/recommendations" routerLinkActive="active">For you</a>
+      }
+
+      @if (auth.isLibrarian()) {
+        <a routerLink="/librarian/dashboard" routerLinkActive="active">Dashboard</a>
+        <a routerLink="/librarian/books" routerLinkActive="active">Manage books</a>
+        <a routerLink="/librarian/trending" routerLinkActive="active">Trending</a>
+        <a routerLink="/librarian/requests" routerLinkActive="active">Requests</a>
+        <a routerLink="/librarian/issued" routerLinkActive="active">Loans</a>
+        <a routerLink="/librarian/members" routerLinkActive="active">Members</a>
+        <a routerLink="/librarian/problems" routerLinkActive="active">Problems</a>
+      }
+    </nav>
+
+    <div class="session">
+      @if (auth.isLoggedIn()) {
+        <span class="who">{{ auth.displayName() }} <span class="role">{{ auth.role() }}</span></span>
+        <button type="button" class="link" (click)="auth.logout()">Sign out</button>
+      } @else {
+        <a routerLink="/login">Sign in</a>
+      }
+    </div>
+  </div>
+</header>
+
+<main>
+  <router-outlet />
+</main>

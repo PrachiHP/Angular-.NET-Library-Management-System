@@ -1,0 +1,94 @@
+.windows {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.window-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-right: 0.25rem;
+}
+
+.window-btn {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8125rem;
+}
+
+.window-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.summary {
+  margin: 0 0 0.35rem;
+}
+
+.hint {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.up {
+  color: var(--ok);
+  font-weight: 600;
+}
+
+.down {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.trend-cell {
+  white-space: nowrap;
+}
+
+.badge.trend {
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+.trend-rising {
+  background: #e9f6ec;
+  color: var(--ok);
+}
+
+.trend-falling {
+  background: #fdeceb;
+  color: var(--danger);
+}
+
+.trend-new {
+  background: #e8eefc;
+  color: var(--accent);
+}
+
+.trend-steady {
+  background: var(--line);
+  color: var(--muted);
+}
+
+.byline {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 860px) {
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,62 @@
+.head-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-panel {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: var(--ground);
+}
+
+.form-panel h3 {
+  margin-top: 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #ccd0d8;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.875rem;
+  resize: vertical;
+}
+
+select {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.cover-cell img {
+  width: 2.25rem;
+  border-radius: 3px;
+  border: 1px solid var(--line);
+  display: block;
+}
+
+.no-cover-mini {
+  color: var(--muted);
+}
+
+/* The file input is hidden; the label acts as the button. */
+.upload {
+  margin: 0;
+  color: var(--accent);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+}

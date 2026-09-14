@@ -1,0 +1,40 @@
+<section>
+  <header class="page-head">
+    <h2>Members</h2>
+    <form class="filters" (ngSubmit)="load()">
+      <input type="search" name="search" placeholder="Search name or email" [(ngModel)]="search" />
+      <button type="submit">Search</button>
+    </form>
+  </header>
+
+  @if (error()) { <p class="error">{{ error() }}</p> }
+
+  @if (members().length === 0) {
+    <p class="muted">No members.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th class="num">On loan</th><th></th></tr>
+      </thead>
+      <tbody>
+        @for (m of members(); track m.id) {
+          <tr>
+            <td>
+              {{ m.fullName }}
+              @if (!m.isActive) { <span class="muted">(inactive)</span> }
+            </td>
+            <td class="mono">{{ m.email }}</td>
+            <td>{{ m.phone }}</td>
+            <td>{{ m.joinedOn | date: 'dd MMM yyyy' }}</td>
+            <td class="num">{{ m.activeLoans }}</td>
+            <td>
+              @if (m.isActive) {
+                <button type="button" class="link danger" (click)="deactivate(m)">Deactivate</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

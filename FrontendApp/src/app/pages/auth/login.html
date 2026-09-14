@@ -1,0 +1,53 @@
+<section class="card">
+  <h2>Sign in</h2>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <form (ngSubmit)="submit()">
+    <label>
+      Email
+      <input type="email" name="email" [(ngModel)]="email" required autocomplete="username" />
+    </label>
+
+    <label>
+      Password
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        required
+        autocomplete="current-password"
+      />
+    </label>
+
+    <button type="submit" [disabled]="busy()">{{ busy() ? 'Signing in…' : 'Sign in' }}</button>
+  </form>
+
+  <p class="muted">No account? <a routerLink="/register">Register as a member</a></p>
+
+  <div class="demo">
+    <p class="demo-title">Demo accounts</p>
+
+    <table class="demo-table">
+      <tbody>
+        @for (account of demoAccounts; track account.email) {
+          <tr>
+            <td><span class="badge">{{ account.role }}</span></td>
+            <td class="mono">{{ account.email }}</td>
+            <td class="mono">{{ account.password }}</td>
+            <td>
+              <button type="button" class="link" (click)="useDemo(account)">Use</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <p class="hint">
+      Both are created automatically on first run. Change the passwords in
+      <code>appsettings.json</code> before any real use.
+    </p>
+  </div>
+</section>

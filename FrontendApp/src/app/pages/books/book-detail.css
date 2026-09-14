@@ -1,0 +1,152 @@
+.detail {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cover {
+  flex: 0 0 9rem;
+}
+
+.cover img {
+  width: 9rem;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  display: block;
+}
+
+.no-cover {
+  width: 9rem;
+  height: 12rem;
+  border: 1px dashed #ccd0d8;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.info {
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
+.info h2 {
+  margin-top: 0;
+}
+
+.byline {
+  color: var(--muted);
+  margin: -0.4rem 0 0.75rem;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0 0 1rem;
+}
+
+dt {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+dd {
+  margin: 0;
+}
+
+.loan-box {
+  margin-top: 1rem;
+  border: 1px solid #b7e0c1;
+  background: #e9f6ec;
+  border-radius: 6px;
+  padding: 0.75rem;
+}
+
+.loan-box.overdue {
+  border-color: #f5c2c0;
+  background: #fdeceb;
+}
+
+.loan-title {
+  margin: 0 0 0.2rem;
+  font-weight: 600;
+}
+
+.due {
+  margin: 0 0 0.6rem;
+}
+
+.warn {
+  color: var(--warn);
+  font-weight: 600;
+}
+
+.blocked {
+  margin-top: 1rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 5px;
+  background: #fef3c7;
+  color: var(--warn);
+  border: 1px solid #fcd34d;
+}
+
+.contribute form {
+  margin-bottom: 1.25rem;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #ccd0d8;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.875rem;
+  resize: vertical;
+}
+
+select {
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.quote-list,
+.review-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.quote-list li,
+.review-list li {
+  border-bottom: 1px solid var(--line);
+  padding: 0.75rem 0;
+}
+
+blockquote {
+  margin: 0 0 0.4rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--line);
+  font-style: italic;
+}
+
+.quote-img {
+  max-width: 16rem;
+  border-radius: 5px;
+  border: 1px solid var(--line);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.meta {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}

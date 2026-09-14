@@ -1,0 +1,298 @@
+:root {
+  --ink: #1a1a1a;
+  --muted: #667085;
+  --line: #e4e7ec;
+  --accent: #1a56c4;
+  --danger: #b3261e;
+  --ok: #1a7f37;
+  --warn: #b54708;
+  --surface: #ffffff;
+  --ground: #f8f9fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--ground);
+  font-size: 14px;
+}
+
+main {
+  max-width: 68rem;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin: 0 0 0.75rem;
+}
+
+h3 {
+  font-size: 1rem;
+  margin: 1.5rem 0 0.5rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+/* ---- tables ---- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.55rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.num {
+  text-align: right;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+/* ---- forms ---- */
+
+input,
+select {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccd0d8;
+  border-radius: 5px;
+  font: inherit;
+  background: #fff;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+label input {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  color: var(--ink);
+  font-size: 0.875rem;
+}
+
+label.check {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+label.check input {
+  width: auto;
+  display: inline;
+  margin: 0;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filters label {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.row label {
+  flex: 1;
+}
+
+button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  border-radius: 5px;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+button.link {
+  background: none;
+  border: 0;
+  color: var(--accent);
+  padding: 0;
+  text-decoration: underline;
+}
+
+button.link.danger {
+  color: var(--danger);
+}
+
+/* ---- messages ---- */
+
+.error,
+.notice {
+  border-radius: 5px;
+  padding: 0.55rem 0.75rem;
+  margin: 0 0 0.75rem;
+}
+
+.error {
+  color: var(--danger);
+  background: #fdeceb;
+  border: 1px solid #f5c2c0;
+}
+
+.notice {
+  color: var(--ok);
+  background: #e9f6ec;
+  border: 1px solid #b7e0c1;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.ok {
+  color: var(--ok);
+}
+
+.out {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: var(--line);
+}
+
+.badge.pending {
+  background: #fef3c7;
+  color: var(--warn);
+}
+
+.badge.ok {
+  background: #e9f6ec;
+  color: var(--ok);
+}
+
+.badge.out {
+  background: #fdeceb;
+  color: var(--danger);
+}
+
+/* ---- cards / tiles ---- */
+
+.card {
+  max-width: 26rem;
+  margin: 2rem auto;
+}
+
+.card button {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.tile {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: var(--ground);
+}
+
+.tile.alert {
+  border-color: #f5c2c0;
+  background: #fdeceb;
+}
+
+.tile .value {
+  font-size: 1.375rem;
+  font-weight: 600;
+}
+
+.tile .label {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+a {
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .row {
+    flex-direction: column;
+  }
+}

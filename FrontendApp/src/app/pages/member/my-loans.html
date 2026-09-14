@@ -1,0 +1,85 @@
+<section>
+  <h2>My books</h2>
+
+  @if (notice()) { <p class="notice">{{ notice() }}</p> }
+  @if (error()) { <p class="error">{{ error() }}</p> }
+
+  <h3>On loan</h3>
+  @if (loans().length === 0) {
+    <p class="muted">Nothing borrowed yet.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Book</th>
+          <th>Issued</th>
+          <th>Due</th>
+          <th>Status</th>
+          <th class="num">Fine</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (loan of loans(); track loan.id) {
+          <tr>
+            <td>{{ loan.bookTitle }}</td>
+            <td>{{ loan.issuedDate | date: 'dd MMM yyyy' }}</td>
+            <td>{{ loan.dueDate | date: 'dd MMM yyyy' }}</td>
+            <td>
+              @if (loan.isReturned) {
+                <span class="muted">Returned {{ loan.returnDate | date: 'dd MMM' }}</span>
+              } @else if (loan.isOverdue) {
+                <span class="out">{{ loan.overdueDays }} days overdue</span>
+              } @else {
+                <span class="ok">On time</span>
+              }
+            </td>
+            <td class="num">{{ loan.fine | number: '1.2-2' }}</td>
+            <td>
+              @if (!loan.isReturned) {
+                <button
+                  type="button"
+                  (click)="reissue(loan)"
+                  [disabled]="loan.reIssuesRemaining === 0"
+                  [title]="loan.reIssuesRemaining === 0 ? 'Re-issue limit reached' : ''"
+                >
+                  Re-issue ({{ loan.reIssuesRemaining }} left)
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  <h3>My requests</h3>
+  @if (requests().length === 0) {
+    <p class="muted">No requests yet.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Book</th>
+          <th>Requested</th>
+          <th>Status</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (req of requests(); track req.id) {
+          <tr>
+            <td>{{ req.bookTitle }}</td>
+            <td>{{ req.requestedOn | date: 'dd MMM yyyy' }}</td>
+            <td>
+              <span class="badge" [class.pending]="req.status === 'Pending'"
+                    [class.ok]="req.status === 'Approved'"
+                    [class.out]="req.status === 'Rejected'">{{ req.status }}</span>
+            </td>
+            <td class="muted">{{ req.rejectionReason }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

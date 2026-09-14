@@ -1,0 +1,42 @@
+<section>
+  <header class="page-head">
+    <h2>Issue requests</h2>
+    <button type="button" class="link" (click)="toggle()">
+      {{ showAll ? 'Show pending only' : 'Show all' }}
+    </button>
+  </header>
+
+  @if (notice()) { <p class="notice">{{ notice() }}</p> }
+  @if (error()) { <p class="error">{{ error() }}</p> }
+
+  @if (requests().length === 0) {
+    <p class="muted">Nothing to review.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr><th>Book</th><th>Member</th><th>Requested</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        @for (req of requests(); track req.id) {
+          <tr>
+            <td>{{ req.bookTitle }}</td>
+            <td>{{ req.memberName }}</td>
+            <td>{{ req.requestedOn | date: 'dd MMM yyyy' }}</td>
+            <td>
+              <span class="badge" [class.pending]="req.status === 'Pending'"
+                    [class.ok]="req.status === 'Approved'"
+                    [class.out]="req.status === 'Rejected'">{{ req.status }}</span>
+              @if (req.rejectionReason) { <span class="muted"> — {{ req.rejectionReason }}</span> }
+            </td>
+            <td class="actions">
+              @if (req.status === 'Pending') {
+                <button type="button" (click)="approve(req)">Approve</button>
+                <button type="button" class="link danger" (click)="reject(req)">Reject</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

@@ -1,0 +1,193 @@
+<p><a routerLink="/books">&larr; Back to catalogue</a></p>
+
+@if (notice()) { <p class="notice">{{ notice() }}</p> }
+@if (error()) { <p class="error">{{ error() }}</p> }
+
+@if (loading() && !book()) {
+  <section><p class="muted">Loading…</p></section>
+} @else if (book(); as b) {
+  <section>
+    <div class="detail">
+      <div class="cover">
+        @if (b.coverImagePath) {
+          <img [src]="fileUrl(b.coverImagePath)" [alt]="b.title + ' cover'" />
+        } @else {
+          <div class="no-cover">No cover</div>
+        }
+      </div>
+
+      <div class="info">
+        <h2>{{ b.title }}</h2>
+
+        @if (b.authors.length > 0) {
+          <p class="byline">{{ b.authors.join(', ') }}</p>
+        }
+
+        <dl>
+          <dt>ISBN</dt><dd class="mono">{{ b.isbn }}</dd>
+          <dt>Category</dt><dd>{{ b.categoryName }}</dd>
+          @if (b.publishedYear) {
+            <dt>Published</dt><dd>{{ b.publishedYear }}</dd>
+          }
+          <dt>Copies</dt>
+          <dd>
+            <span [class.out]="!b.isAvailable">{{ b.availableCopies }} of {{ b.totalCopies }} on shelf</span>
+          </dd>
+          <dt>Rating</dt>
+          <dd>
+            @if (averageRating(); as avg) {
+              {{ avg.toFixed(1) }} / 5 <span class="muted">({{ feedback().length }} review(s))</span>
+            } @else {
+              <span class="muted">Not rated yet</span>
+            }
+          </dd>
+        </dl>
+
+        @if (b.description) {
+          <p>{{ b.description }}</p>
+        }
+
+        <!-- Member loan status: the due date lives here -->
+        @if (auth.isMember() && status(); as s) {
+          @if (s.currentlyHeld) {
+            <div class="loan-box" [class.overdue]="s.isOverdue">
+              <p class="loan-title">You have this book</p>
+              <p class="due">
+                Due <strong>{{ s.dueDate | date: 'dd MMM yyyy' }}</strong>
+                @if (s.isOverdue) {
+                  — <span class="out">overdue by {{ -(s.daysUntilDue ?? 0) }} day(s)</span>
+                } @else if (s.daysUntilDue === 0) {
+                  — <span class="warn">due today</span>
+                } @else {
+                  — <span class="ok">{{ s.daysUntilDue }} day(s) left</span>
+                }
+              </p>
+              <button
+                type="button"
+                (click)="reissue()"
+                [disabled]="s.reIssuesRemaining === 0"
+              >
+                Re-issue ({{ s.reIssuesRemaining }} left)
+              </button>
+            </div>
+          } @else if (s.canRequest) {
+            <button type="button" (click)="request()" [disabled]="!b.isAvailable">
+              {{ b.isAvailable ? 'Request this book' : 'No copies available' }}
+            </button>
+          } @else {
+            <p class="blocked">{{ s.reason }}</p>
+          }
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Member contributions, only for books they have borrowed -->
+  @if (auth.isMember() && status()?.hasEverBorrowed) {
+    <section class="contribute">
+      <h3>Your summary</h3>
+      <form (ngSubmit)="submitFeedback()">
+        <label>
+          Rating
+          <select name="rating" [(ngModel)]="rating">
+            @for (n of [5, 4, 3, 2, 1]; track n) {
+              <option [value]="n">{{ n }} / 5</option>
+            }
+          </select>
+        </label>
+        <label>
+          Summary or review
+          <textarea
+            name="comment"
+            rows="3"
+            [(ngModel)]="comment"
+            placeholder="What did you make of it?"
+          ></textarea>
+        </label>
+        <button type="submit">Save summary</button>
+      </form>
+
+      <h3>Favourite quote</h3>
+      <form (ngSubmit)="submitQuote()">
+        <label>
+          Type the passage
+          <textarea
+            name="quoteText"
+            rows="2"
+            [(ngModel)]="quoteText"
+            placeholder="A line worth remembering…"
+          ></textarea>
+        </label>
+        <label>
+          …or attach a photo of the page
+          <input type="file" accept="image/*" (change)="onQuoteImage($event)" />
+        </label>
+        <button type="submit">Post quote</button>
+      </form>
+
+      <h3>Report a problem</h3>
+      <form (ngSubmit)="reportProblem()">
+        <label>
+          Problem
+          <select name="problemType" [(ngModel)]="problemType">
+            @for (p of problemTypes; track p.value) {
+              <option [value]="p.value">{{ p.label }}</option>
+            }
+          </select>
+        </label>
+        <label>
+          Details
+          <input name="problemDescription" [(ngModel)]="problemDescription" placeholder="Pages 40–52 stained" />
+        </label>
+        <button type="submit">Report</button>
+      </form>
+    </section>
+  } @else if (auth.isMember()) {
+    <section>
+      <p class="muted">
+        Borrow this book to add a summary, post a favourite quote, or report a problem.
+      </p>
+    </section>
+  }
+
+  <section>
+    <h3>Quote wall</h3>
+    @if (quotes().length === 0) {
+      <p class="muted">No quotes yet.</p>
+    } @else {
+      <ul class="quote-list">
+        @for (q of quotes(); track q.id) {
+          <li>
+            @if (q.text) { <blockquote>{{ q.text }}</blockquote> }
+            @if (q.imagePath) {
+              <img class="quote-img" [src]="fileUrl(q.imagePath)" alt="Quote page" />
+            }
+            <p class="meta">
+              {{ q.memberName }} · {{ q.createdAt | date: 'dd MMM yyyy' }}
+              <button type="button" class="link" (click)="like(q)">♥ {{ q.likes }}</button>
+            </p>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  <section>
+    <h3>Reviews</h3>
+    @if (feedback().length === 0) {
+      <p class="muted">No reviews yet.</p>
+    } @else {
+      <ul class="review-list">
+        @for (f of feedback(); track f.id) {
+          <li>
+            <p class="meta">
+              <strong>{{ f.rating }} / 5</strong> · {{ f.memberName }} ·
+              {{ f.createdAt | date: 'dd MMM yyyy' }}
+            </p>
+            @if (f.comment) { <p>{{ f.comment }}</p> }
+          </li>
+        }
+      </ul>
+    }
+  </section>
+}

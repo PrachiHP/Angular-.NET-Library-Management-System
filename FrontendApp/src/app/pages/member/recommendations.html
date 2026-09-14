@@ -1,0 +1,107 @@
+<section>
+  <header class="page-head">
+    <h2>Recommended for you</h2>
+    <button type="button" class="link" (click)="toggleScores()">
+      {{ showScores() ? 'Hide scores' : 'Show scores' }}
+    </button>
+  </header>
+
+  @if (notice()) { <p class="notice">{{ notice() }}</p> }
+  @if (error()) { <p class="error">{{ error() }}</p> }
+
+  @if (loading()) {
+    <p class="muted">Working out what you might like…</p>
+  } @else if (data(); as d) {
+    @if (d.isColdStart) {
+      <p class="cold">
+        You have not borrowed anything yet, so these are simply the books other
+        members read and rate most. Borrow one and this page starts matching
+        your taste.
+      </p>
+    } @else {
+      <div class="profile">
+        <p class="profile-line">
+          Based on <strong>{{ d.profile.booksBorrowed }}</strong> book(s) you have borrowed
+          @if (d.profile.booksRated > 0) {
+            and <strong>{{ d.profile.booksRated }}</strong> you have rated
+          }
+        </p>
+
+        @if (d.profile.topAuthors.length > 0) {
+          <p class="chips">
+            <span class="chip-label">Authors</span>
+            @for (a of d.profile.topAuthors; track a.name) {
+              <span class="chip">{{ a.name }} <span class="chip-count">×{{ a.count }}</span></span>
+            }
+          </p>
+        }
+
+        @if (d.profile.topCategories.length > 0) {
+          <p class="chips">
+            <span class="chip-label">Categories</span>
+            @for (c of d.profile.topCategories; track c.name) {
+              <span class="chip">{{ c.name }} <span class="chip-count">×{{ c.count }}</span></span>
+            }
+          </p>
+        }
+      </div>
+    }
+
+    @if (d.recommendations.length === 0) {
+      <p class="muted">
+        Nothing to suggest right now — you may have borrowed everything that
+        matches, or the remaining books are in their cooldown window.
+      </p>
+    } @else {
+      <ul class="rec-list">
+        @for (rec of d.recommendations; track rec.bookId) {
+          <li>
+            <div class="rec-cover">
+              @if (rec.coverImagePath) {
+                <img [src]="fileUrl(rec.coverImagePath)" [alt]="rec.title" />
+              } @else {
+                <div class="no-cover">No cover</div>
+              }
+            </div>
+
+            <div class="rec-body">
+              <h3 class="rec-title">
+                <a [routerLink]="['/books', rec.bookId]">{{ rec.title }}</a>
+              </h3>
+
+              @if (rec.authors.length > 0) {
+                <p class="byline">{{ rec.authors.join(', ') }}</p>
+              }
+
+              <p class="reason">{{ rec.reason }}</p>
+
+              <p class="facts">
+                <span>{{ rec.categoryName }}</span>
+                <span>·</span>
+                @if (rec.averageRating !== null) {
+                  <span>{{ rec.averageRating.toFixed(1) }} / 5</span>
+                } @else {
+                  <span class="muted">not rated</span>
+                }
+                <span>·</span>
+                <span [class.out]="!rec.isAvailable">
+                  {{ rec.availableCopies }} on shelf
+                </span>
+                @if (showScores()) {
+                  <span>·</span>
+                  <span class="score">score {{ rec.score }}</span>
+                }
+              </p>
+            </div>
+
+            <div class="rec-action">
+              <button type="button" (click)="request(rec)" [disabled]="!rec.isAvailable">
+                {{ rec.isAvailable ? 'Request' : 'Unavailable' }}
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  }
+</section>

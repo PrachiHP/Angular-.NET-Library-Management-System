@@ -1,0 +1,63 @@
+<section>
+  <header class="page-head">
+    <h2>Catalogue</h2>
+
+    <form class="filters" (ngSubmit)="load()">
+      <input type="search" name="search" placeholder="Search title or ISBN" [(ngModel)]="search" />
+      <label class="check">
+        <input type="checkbox" name="onlyAvailable" [(ngModel)]="onlyAvailable" />
+        Available only
+      </label>
+      <button type="submit">Search</button>
+    </form>
+  </header>
+
+  @if (notice()) {
+    <p class="notice">{{ notice() }}</p>
+  }
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="muted">Loading…</p>
+  } @else if (books().length === 0) {
+    <p class="muted">No books match.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>ISBN</th>
+          <th>Category</th>
+          <th class="num">Available</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (book of books(); track book.id) {
+          <tr>
+            <td><a [routerLink]="['/books', book.id]">{{ book.title }}</a></td>
+            <td class="mono">{{ book.isbn }}</td>
+            <td>{{ book.categoryName }}</td>
+            <td class="num">
+              <span [class.out]="!book.isAvailable">
+                {{ book.availableCopies }} / {{ book.totalCopies }}
+              </span>
+            </td>
+            <td class="actions">
+              @if (auth.isMember()) {
+                <button type="button" (click)="request(book)" [disabled]="!book.isAvailable">
+                  Request
+                </button>
+              }
+              @if (auth.isLibrarian()) {
+                <button type="button" class="link danger" (click)="remove(book)">Remove</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

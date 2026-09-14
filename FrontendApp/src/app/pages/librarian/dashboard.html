@@ -1,0 +1,46 @@
+<section>
+  <h2>Dashboard</h2>
+
+  @if (error()) { <p class="error">{{ error() }}</p> }
+
+  @if (data(); as d) {
+    <div class="tiles">
+      <div class="tile"><span class="value">{{ d.totalBooks }}</span><span class="label">Titles</span></div>
+      <div class="tile"><span class="value">{{ d.availableCopies }} / {{ d.totalCopies }}</span><span class="label">Copies on shelf</span></div>
+      <div class="tile"><span class="value">{{ d.activeMembers }}</span><span class="label">Active members</span></div>
+      <div class="tile" [class.alert]="d.pendingRequests > 0"><span class="value">{{ d.pendingRequests }}</span><span class="label">Pending requests</span></div>
+      <div class="tile"><span class="value">{{ d.outstandingLoans }}</span><span class="label">On loan</span></div>
+      <div class="tile" [class.alert]="d.overdueLoans > 0"><span class="value">{{ d.overdueLoans }}</span><span class="label">Overdue</span></div>
+      <div class="tile"><span class="value">{{ d.outstandingFines | number: '1.2-2' }}</span><span class="label">Fines collected</span></div>
+      <div class="tile" [class.alert]="d.unresolvedProblems > 0"><span class="value">{{ d.unresolvedProblems }}</span><span class="label">Open problems</span></div>
+    </div>
+
+    <h3>Most issued</h3>
+    @if (d.popularBooks.length === 0) {
+      <p class="muted">No loans recorded yet.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr><th>Title</th><th class="num">Times issued</th><th class="num">Avg rating</th></tr>
+        </thead>
+        <tbody>
+          @for (book of d.popularBooks; track book.bookId) {
+            <tr>
+              <td>{{ book.title }}</td>
+              <td class="num">{{ book.timesIssued }}</td>
+              <td class="num">
+                @if (book.averageRating === null) {
+                  <span class="muted">not rated</span>
+                } @else {
+                  {{ book.averageRating | number: '1.1-1' }}
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  } @else if (!error()) {
+    <p class="muted">Loading…</p>
+  }
+</section>

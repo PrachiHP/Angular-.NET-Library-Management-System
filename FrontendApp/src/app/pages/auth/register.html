@@ -1,0 +1,39 @@
+<section class="card">
+  <h2>Create a member account</h2>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <form (ngSubmit)="submit()">
+    <div class="row">
+      <label>
+        First name
+        <input name="firstName" [(ngModel)]="model.firstName" required />
+      </label>
+      <label>
+        Last name
+        <input name="lastName" [(ngModel)]="model.lastName" required />
+      </label>
+    </div>
+
+    <label>
+      Email
+      <input type="email" name="email" [(ngModel)]="model.email" required />
+    </label>
+
+    <label>
+      Password <span class="muted">(at least 8 characters)</span>
+      <input type="password" name="password" [(ngModel)]="model.password" required minlength="8" />
+    </label>
+
+    <label>
+      Phone <span class="muted">(optional)</span>
+      <input name="phone" [(ngModel)]="model.phone" />
+    </label>
+
+    <button type="submit" [disabled]="busy()">{{ busy() ? 'Creating…' : 'Create account' }}</button>
+  </form>
+
+  <p class="muted">Already registered? <a routerLink="/login">Sign in</a></p>
+</section>

@@ -1,0 +1,51 @@
+<section>
+  <header class="page-head">
+    <h2>{{ overdueOnly ? 'Overdue loans' : 'All loans' }}</h2>
+    <button type="button" class="link" (click)="toggle()">
+      {{ overdueOnly ? 'Show all' : 'Show overdue only' }}
+    </button>
+  </header>
+
+  @if (notice()) { <p class="notice">{{ notice() }}</p> }
+  @if (error()) { <p class="error">{{ error() }}</p> }
+
+  @if (loans().length === 0) {
+    <p class="muted">Nothing to show.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Book</th><th>Member</th><th>Issued</th><th>Due</th>
+          <th>Status</th><th class="num">Fine</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (loan of loans(); track loan.id) {
+          <tr>
+            <td>{{ loan.bookTitle }}</td>
+            <td>{{ loan.memberName }}</td>
+            <td>{{ loan.issuedDate | date: 'dd MMM yyyy' }}</td>
+            <td>{{ loan.dueDate | date: 'dd MMM yyyy' }}</td>
+            <td>
+              @if (loan.isReturned) {
+                <span class="muted">Returned {{ loan.returnDate | date: 'dd MMM' }}</span>
+              } @else if (loan.isOverdue) {
+                <span class="out">{{ loan.overdueDays }} day(s) late</span>
+              } @else if (daysUntilDue(loan) === 0) {
+                <span class="warn">Due today</span>
+              } @else {
+                <span class="ok">{{ daysUntilDue(loan) }} day(s) left</span>
+              }
+            </td>
+            <td class="num">{{ loan.fine | number: '1.2-2' }}</td>
+            <td>
+              @if (!loan.isReturned) {
+                <button type="button" (click)="returnBook(loan)">Return</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

@@ -1,0 +1,55 @@
+# ---------------------------------------------------------------------------
+# .NET build output
+# ---------------------------------------------------------------------------
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ---------------------------------------------------------------------------
+# Visual Studio / Rider / VS Code
+# ---------------------------------------------------------------------------
+.vs/
+.idea/
+*.swp
+
+# ---------------------------------------------------------------------------
+# Uploaded files
+#
+# Cover and quote images are user-generated content, not source. The folders
+# themselves are kept via .gitkeep because LocalFileStorageService creates any
+# missing directory on first upload anyway.
+# ---------------------------------------------------------------------------
+BackendAPI/wwwroot/uploads/**
+!BackendAPI/wwwroot/uploads/
+!BackendAPI/wwwroot/uploads/.gitkeep
+
+# ---------------------------------------------------------------------------
+# Local secrets
+#
+# appsettings.json in this repo holds only development values: a placeholder
+# JWT signing key, demo seed passwords, and a Windows-auth connection string
+# with no password. Anything genuinely secret belongs in User Secrets
+# (dotnet user-secrets) or environment variables, never in a committed file.
+# ---------------------------------------------------------------------------
+appsettings.Local.json
+appsettings.*.Local.json
+secrets.json
+
+# ---------------------------------------------------------------------------
+# OS noise
+# ---------------------------------------------------------------------------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# ---------------------------------------------------------------------------
+# Logs
+# ---------------------------------------------------------------------------
+*.log
+BackendAPI/logs/

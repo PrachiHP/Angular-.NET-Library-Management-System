@@ -1,0 +1,35 @@
+.demo {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.demo-title {
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.demo-table {
+  margin-top: 0;
+}
+
+.demo-table td {
+  border-bottom: 0;
+  padding: 0.2rem 0.4rem 0.2rem 0;
+  font-size: 0.8125rem;
+  vertical-align: middle;
+}
+
+.demo-table td:first-child {
+  padding-left: 0;
+}
+
+.hint code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: var(--ground);
+  padding: 0 0.2rem;
+  border-radius: 3px;
+}

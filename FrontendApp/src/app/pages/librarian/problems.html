@@ -1,0 +1,38 @@
+<section>
+  <header class="page-head">
+    <h2>Reported problems</h2>
+    <button type="button" class="link" (click)="toggle()">
+      {{ unresolvedOnly ? 'Show all' : 'Show open only' }}
+    </button>
+  </header>
+
+  @if (error()) { <p class="error">{{ error() }}</p> }
+
+  @if (problems().length === 0) {
+    <p class="muted">No reports.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr><th>Book</th><th>Reported by</th><th>Type</th><th>Details</th><th>When</th><th></th></tr>
+      </thead>
+      <tbody>
+        @for (p of problems(); track p.id) {
+          <tr>
+            <td>{{ p.bookTitle }}</td>
+            <td>{{ p.memberName }}</td>
+            <td>{{ p.problemLabel }}</td>
+            <td class="muted">{{ p.description }}</td>
+            <td>{{ p.reportedOn | date: 'dd MMM yyyy' }}</td>
+            <td>
+              @if (p.isResolved) {
+                <span class="muted">Resolved</span>
+              } @else {
+                <button type="button" (click)="resolve(p)">Resolve</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

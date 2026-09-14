@@ -1,0 +1,115 @@
+<section>
+  <header class="page-head">
+    <h2>Manage books</h2>
+
+    <div class="head-actions">
+      <form class="filters" (ngSubmit)="load()">
+        <input type="search" name="search" placeholder="Search title or ISBN" [(ngModel)]="search" />
+        <button type="submit">Search</button>
+      </form>
+      <button type="button" (click)="startCreate()">Add book</button>
+    </div>
+  </header>
+
+  @if (notice()) { <p class="notice">{{ notice() }}</p> }
+  @if (error()) { <p class="error">{{ error() }}</p> }
+
+  @if (formOpen()) {
+    <div class="form-panel">
+      <h3>{{ editingId() === null ? 'New book' : 'Edit book' }}</h3>
+
+      <form (ngSubmit)="save()">
+        <label>
+          Title
+          <input name="title" [(ngModel)]="form.title" required maxlength="300" />
+        </label>
+
+        <div class="row">
+          <label>
+            ISBN
+            <input name="isbn" [(ngModel)]="form.isbn" required minlength="10" maxlength="20" />
+          </label>
+          <label>
+            Published year
+            <input type="number" name="publishedYear" [(ngModel)]="form.publishedYear" min="1400" max="2100" />
+          </label>
+        </div>
+
+        <div class="row">
+          <label>
+            Category
+            <select name="categoryId" [(ngModel)]="form.categoryId">
+              @for (c of categories; track c.id) {
+                <option [value]="c.id">{{ c.name }}</option>
+              }
+            </select>
+          </label>
+          <label>
+            Total copies
+            <input type="number" name="totalCopies" [(ngModel)]="form.totalCopies" min="1" max="10000" required />
+          </label>
+        </div>
+
+        <label>
+          Description
+          <textarea name="description" rows="3" [(ngModel)]="form.description" maxlength="2000"></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="saving()">
+            {{ saving() ? 'Saving…' : editingId() === null ? 'Add book' : 'Save changes' }}
+          </button>
+          <button type="button" class="link" (click)="cancel()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  }
+
+  @if (books().length === 0) {
+    <p class="muted">No books yet. Use “Add book” to create one.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Cover</th>
+          <th>Title</th>
+          <th>ISBN</th>
+          <th>Category</th>
+          <th class="num">Copies</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (book of books(); track book.id) {
+          <tr>
+            <td class="cover-cell">
+              @if (book.coverImagePath) {
+                <img [src]="fileUrl(book.coverImagePath)" [alt]="book.title" />
+              } @else {
+                <span class="no-cover-mini">—</span>
+              }
+            </td>
+            <td><a [routerLink]="['/books', book.id]">{{ book.title }}</a></td>
+            <td class="mono">{{ book.isbn }}</td>
+            <td>{{ book.categoryName }}</td>
+            <td class="num">
+              <span [class.out]="!book.isAvailable">
+                {{ book.availableCopies }} / {{ book.totalCopies }}
+              </span>
+            </td>
+            <td class="actions">
+              <button type="button" class="link" (click)="startEdit(book)">Edit</button>
+
+              <label class="upload">
+                Cover
+                <input type="file" accept="image/*" (change)="onCover($event, book)" hidden />
+              </label>
+
+              <button type="button" class="link danger" (click)="remove(book)">Remove</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
